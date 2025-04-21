@@ -1,5 +1,5 @@
 using System;
-using System.Data.SqlClient;
+using MySql.Data.MySqlClient;
 
 namespace RegistrationForm
 {
@@ -21,14 +21,14 @@ namespace RegistrationForm
             Console.Write("Enter your cellphone number: ");
             string cellphoneNumber = Console.ReadLine();
 
-            // Replace YOUR_SERVER and YOUR_DATABASE with your actual SQL Server info
-            string connectionString = "Data Source=YOUR_SERVER;Initial Catalog=YOUR_DATABASE;Integrated Security=True";
+            // Update with your actual MySQL server information
+            string connectionString = "Server=YOUR_SERVER;Database=YOUR_DATABASE;Uid=YOUR_USERNAME;Pwd=YOUR_PASSWORD;";
 
-            using (SqlConnection conn = new SqlConnection(connectionString))
+            using (MySqlConnection conn = new MySqlConnection(connectionString))
             {
                 string query = "INSERT INTO Students (WholeName, StudentNumber, Age, CellphoneNumber) VALUES (@WholeName, @StudentNumber, @Age, @CellphoneNumber)";
 
-                using (SqlCommand cmd = new SqlCommand(query, conn))
+                using (MySqlCommand cmd = new MySqlCommand(query, conn))
                 {
                     cmd.Parameters.AddWithValue("@WholeName", wholeName);
                     cmd.Parameters.AddWithValue("@StudentNumber", studentNumber);
@@ -39,4 +39,14 @@ namespace RegistrationForm
                     {
                         conn.Open();
                         cmd.ExecuteNonQuery();
-                        Console
+                        Console.WriteLine("Student registered successfully!");
+                    }
+                    catch (Exception ex)
+                    {
+                        Console.WriteLine("An error occurred: " + ex.Message);
+                    }
+                }
+            }
+        }
+    }
+}
